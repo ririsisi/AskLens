@@ -1,0 +1,33 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "AskLens: 启动中间件 (Docker)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/start-local.ps1"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "AskLens: 停止中间件",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/scripts/stop-local.ps1"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

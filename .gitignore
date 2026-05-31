@@ -1,0 +1,16 @@
+# Obsidian 个人工作区（不提交）
+.obsidian/
+docs/.obsidian/workspace.json
+docs/.obsidian/workspace-mobile.json
+docs/.obsidian/plugins/
+docs/.obsidian/themes/
+
+# 本地环境配置（含密钥，不提交）
+deploy/local/.env
+.vscode/launch.json
+
+# 运行时日志
+logs/
+
+# 本地附件可提交；若含大图可自行取消下一行
+# docs/_attachments/

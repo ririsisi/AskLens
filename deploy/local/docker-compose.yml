@@ -1,0 +1,96 @@
+# 答镜AskLens 本地开发中间件（PostgreSQL + ES + MinIO）
+# 用法：在项目根目录执行  scripts/start-local.ps1
+#
+# 国内网络可在 .env 中设置：
+#   DOCKER_MIRROR=docker.m.daocloud.io
+
+services:
+  postgres:
+    image: ${DOCKER_MIRROR:-docker.io}/pgvector/pgvector:pg16
+    container_name: asklens-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-asklens}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../../sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-asklens}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  elasticsearch:
+    build:
+      context: ../../AskLens-backend
+      dockerfile: deploy/docker/elasticsearch/Dockerfile
+      args:
+        ES_BASE_IMAGE: ${ES_BASE_IMAGE:-docker.elastic.co/elasticsearch/elasticsearch:8.15.3}
+    container_name: asklens-elasticsearch
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms512m -Xmx512m}
+    ports:
+      - "${ELASTICSEARCH_PORT:-9200}:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+
+  minio:
+    image: ${DOCKER_MIRROR:-docker.io}/minio/minio:RELEASE.2025-09-07T16-13-09Z
+    container_name: asklens-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio-init:
+    image: ${DOCKER_MIRROR:-docker.io}/minio/mc:RELEASE.2025-08-13T08-35-41Z
+    container_name: asklens-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin} &&
+      mc mb local/${MINIO_BUCKET:-asklens-documents} --ignore-existing &&
+      echo 'MinIO bucket ready'
+      "
+    restart: "no"
+
+  elasticvue:
+    profiles: ["ui"]
+    image: ${DOCKER_MIRROR:-docker.io}/cars10/elasticvue:latest
+    container_name: asklens-elasticvue
+    restart: unless-stopped
+    ports:
+      - "${ELASTICVUE_PORT:-8088}:8080"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+  elasticsearch-data:
+  minio-data:

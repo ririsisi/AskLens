@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+      日志位置（相对 AskLens-backend 工作目录）：
+        - 控制台：启动后端的终端 / Cursor「调试控制台」
+        - 全量：./logs/asklens.log
+        - 告警及以上：./logs/asklens-error.log
+    -->
+    <property name="LOG_PATH" value="./logs"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/asklens"/>
+    <property name="LOG_ERROR_FILE" value="${LOG_PATH}/asklens-error"/>
+    <springProperty scope="context" name="CONSOLE_LOG_CHARSET" source="logging.charset.console" defaultValue="UTF-8"/>
+
+    <!-- 本地开发：按级别着色，异常堆栈单独标红 -->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <withJansi>true</withJansi>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <charset>${CONSOLE_LOG_CHARSET}</charset>
+                <pattern>%boldWhite(%d{HH:mm:ss.SSS}) %highlight(%-5level){ERROR=bold red, WARN=bold yellow, INFO=bold green, DEBUG=cyan, TRACE=faint} %magenta([%thread]) %boldCyan(%logger{40}) %highlight(- %msg){ERROR=red, WARN=yellow, INFO=default, DEBUG=default} %n%red(%ex{full})</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!-- 非 local：纯文本，便于服务器/CI 收集 -->
+    <springProfile name="!local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <withJansi>true</withJansi>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <charset>${CONSOLE_LOG_CHARSET}</charset>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n%ex{full}</pattern>
+            </encoder>
+        </appender>
+    </springProfile>
+
+    <!-- 全部日志滚动文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}.log</file>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n%ex{full}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- WARN / ERROR 单独输出，便于快速排查 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_ERROR_FILE}.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n%ex{full}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_ERROR_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 项目包日志级别 -->
+    <logger name="com.asklens" level="DEBUG"/>
+
+    <!-- 第三方日志级别 -->
+    <logger name="com.baomidou.mybatisplus" level="WARN"/>
+    <logger name="org.mybatis" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+</configuration>

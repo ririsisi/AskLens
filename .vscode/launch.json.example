@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "AskLens Backend (local)",
+      "request": "launch",
+      "mainClass": "com.asklens.AskLensBackendApplication",
+      "projectName": "AskLens-backend",
+      "cwd": "${workspaceFolder}/AskLens-backend",
+      "console": "integratedTerminal",
+      "shortenCommandLine": "argfile",
+      "env": {
+        "JAVA_HOME": "D:\\Develop\\jdk-22",
+        "SPRING_PROFILES_ACTIVE": "local",
+        "DASHSCOPE_API_KEY": "your-dashscope-api-key",
+        "DB_PASSWORD": "postgres"
+      },
+      "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Dspring.profiles.active=local"
+    }
+  ]
+}

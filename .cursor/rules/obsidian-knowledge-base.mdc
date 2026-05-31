@@ -1,0 +1,32 @@
+---
+description: Argus docs 知识库与 Obsidian 双链笔记协作约定
+globs: docs/**/*.md
+alwaysApply: false
+---
+
+# Obsidian 知识库协作
+
+项目知识库位于 `docs/`，与 Obsidian Vault 共用同一目录。
+
+## 回答与实现前
+
+1. 涉及架构/ETL/RAG/Agent 时，优先查阅并对齐：
+   - `docs/RAG-核心原理图.md`
+   - `docs/V2.0-设计决策.md` / `docs/V3.0-设计决策.md` / `docs/V4.0-设计决策.md`
+   - `docs/Argus-学习指南.md`
+2. 用户 `@docs/...` 引用笔记时，以该笔记为权威上下文。
+3. 不要臆造与上述文档冲突的设计；有冲突时指出并询问。
+
+## 沉淀笔记
+
+用户要求记录结论、踩坑、ADR 时：
+
+- 临时内容 → `docs/_inbox/`，使用 `_templates/` 下模板
+- 正式 ADR → `docs/_templates/设计决策-ADR.md` 结构，或合并进现有 V*.0-设计决策
+- 使用 YAML frontmatter：`type`, `tags`, `status`, `created`, `related`
+- Obsidian 双链格式：`[[文件名]]` 或 `[[文件名#标题]]`
+
+## 不要
+
+- 未经用户要求不要批量给**其他**正式文档加 frontmatter 或改结构（V2/V3/RAG 已统一维护 related 双链）
+- 不要把 Vault 扩大到整个仓库根目录

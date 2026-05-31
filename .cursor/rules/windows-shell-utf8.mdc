@@ -1,0 +1,30 @@
+---
+description: Windows 下执行 Shell 命令前强制 UTF-8，避免对话页中文乱码
+alwaysApply: true
+---
+
+# Windows Shell UTF-8
+
+在 Windows 上通过 Shell 工具执行 PowerShell 命令时，**每条命令前**先设置 UTF-8 输出编码，避免 Agent 对话页展示 GBK/UTF-8 混用导致的中文乱码。
+
+## 命令前缀（PowerShell）
+
+```powershell
+chcp 65001 | Out-Null; [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); $OutputEncoding = [System.Text.UTF8Encoding]::new($false);
+```
+
+示例：
+
+```powershell
+chcp 65001 | Out-Null; [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false); docker ps
+```
+
+## PowerShell 脚本（.ps1）
+
+- 脚本正文优先使用英文 `Write-Host`，或
+- 文件保存为 **UTF-8 with BOM**，并在开头加入上述编码设置
+
+## 说明
+
+- 用户 Cursor 终端已配置 `PowerShell (UTF-8)`；Agent 后台 Shell 不一定继承该配置，故仍需显式 `chcp 65001`
+- 我可以用中文回复用户；乱码仅出现在未设 UTF-8 的**命令回显**中
