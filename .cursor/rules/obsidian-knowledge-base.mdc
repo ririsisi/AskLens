@@ -1,5 +1,5 @@
 ---
-description: Argus docs 知识库与 Obsidian 双链笔记协作约定
+description: AskLens docs 知识库与 Obsidian 双链笔记协作约定
 globs: docs/**/*.md
 alwaysApply: false
 ---
@@ -13,7 +13,7 @@ alwaysApply: false
 1. 涉及架构/ETL/RAG/Agent 时，优先查阅并对齐：
    - `docs/RAG-核心原理图.md`
    - `docs/V2.0-设计决策.md` / `docs/V3.0-设计决策.md` / `docs/V4.0-设计决策.md`
-   - `docs/Argus-学习指南.md`
+   - `docs/AskLens-学习指南.md`
 2. 用户 `@docs/...` 引用笔记时，以该笔记为权威上下文。
 3. 不要臆造与上述文档冲突的设计；有冲突时指出并询问。
 

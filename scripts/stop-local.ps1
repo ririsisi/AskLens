@@ -13,7 +13,7 @@ if (Test-Path $dockerBin) {
 }
 
 Write-Host ""
-Write-Host "=== Stopping Argus middleware ===" -ForegroundColor Cyan
+Write-Host "=== Stopping AskLens middleware ===" -ForegroundColor Cyan
 
 Push-Location $ComposeDir
 try {

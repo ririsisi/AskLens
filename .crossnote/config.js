@@ -1,5 +1,5 @@
 /**
- * Markdown Preview Enhanced — Argus 文档 Mermaid 渲染配置
+ * Markdown Preview Enhanced — AskLens 文档 Mermaid 渲染配置
  *
  * 可切换样式（改 theme / look 后 Reload 预览）：
  * - theme: neutral   → 低饱和、白底文档最清晰（当前）
