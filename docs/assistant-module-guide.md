@@ -1,4 +1,4 @@
-# Argus 助手模块深度解析：从 Spring AI 初学者到理解 Agent 架构
+﻿# AskLens 助手模块深度解析：从 Spring AI 初学者到理解 Agent 架构
 
 > 适用读者：有 Java / Spring Boot 基础，但初次接触 Spring AI 和 AI Agent 概念的开发者。
 >
@@ -397,7 +397,7 @@ stateDiagram-v2
 ReactAgent agent = ReactAgent.builder()
     .name("assistant")
     .model(chatModel)                  // ① 指定用哪个大模型
-    .description("Argus AI 助手")
+    .description("AskLens AI 助手")
     .instruction(instruction)          // ② 系统指令（定义角色和行为规范）
     .compileConfig(CompileConfig.builder()
         .recursionLimit(10)            // ③ 最多 10 轮"思考→行动"循环
@@ -1003,16 +1003,16 @@ HNSW（Hierarchical Navigable Small World）是一种高效的近似最近邻搜
 
 | 你要找的功能 | 去看哪个文件 |
 |-------------|-------------|
-| Agent 怎么创建和配置 | [AssistantReactAgentFactory.java](../Argus-backend/src/main/java/com/argus/rag/assistant/agent/AssistantReactAgentFactory.java) |
-| Agent 怎么被调用 | [AssistantAgentFacade.java](../Argus-backend/src/main/java/com/argus/rag/assistant/agent/AssistantAgentFacade.java) |
-| 工具怎么定义 | [AssistantKnowledgeBaseTool.java](../Argus-backend/src/main/java/com/argus/rag/assistant/agent/AssistantKnowledgeBaseTool.java) |
-| 一次对话的完整流程 | [AssistantService.java](../Argus-backend/src/main/java/com/argus/rag/assistant/service/AssistantService.java) |
-| 记忆怎么在模型调用前注入 | [AssistantShortTermMemoryHook.java](../Argus-backend/src/main/java/com/argus/rag/assistant/memory/AssistantShortTermMemoryHook.java) |
-| 记忆怎么生成和维护 | [AssistantShortTermMemoryMaintenanceService.java](../Argus-backend/src/main/java/com/argus/rag/assistant/memory/AssistantShortTermMemoryMaintenanceService.java) |
-| LLM 驱动摘要怎么生成 | [AssistantMemorySummarizer.java](../Argus-backend/src/main/java/com/argus/rag/assistant/memory/AssistantMemorySummarizer.java) |
-| 提示词模板长什么样 | [session-memory-update.st](../Argus-backend/src/main/resources/prompts/assistant/session-memory-update.st) |
-| 数据库怎么交互 | [AssistantMessageMapper.xml](../Argus-backend/src/main/resources/mappers/assistant/AssistantMessageMapper.xml) |
-| 系统指令怎么构建 | [AssistantPromptContextBuilder.java](../Argus-backend/src/main/java/com/argus/rag/assistant/support/config/AssistantPromptContextBuilder.java) |
+| Agent 怎么创建和配置 | [AssistantReactAgentFactory.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/agent/AssistantReactAgentFactory.java) |
+| Agent 怎么被调用 | [AssistantAgentFacade.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/agent/AssistantAgentFacade.java) |
+| 工具怎么定义 | [AssistantKnowledgeBaseTool.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/agent/AssistantKnowledgeBaseTool.java) |
+| 一次对话的完整流程 | [AssistantService.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/service/AssistantService.java) |
+| 记忆怎么在模型调用前注入 | [AssistantShortTermMemoryHook.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/memory/AssistantShortTermMemoryHook.java) |
+| 记忆怎么生成和维护 | [AssistantShortTermMemoryMaintenanceService.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/memory/AssistantShortTermMemoryMaintenanceService.java) |
+| LLM 驱动摘要怎么生成 | [AssistantMemorySummarizer.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/memory/AssistantMemorySummarizer.java) |
+| 提示词模板长什么样 | [session-memory-update.st](../AskLens-backend/src/main/resources/prompts/assistant/session-memory-update.st) |
+| 数据库怎么交互 | [AssistantMessageMapper.xml](../AskLens-backend/src/main/resources/mappers/assistant/AssistantMessageMapper.xml) |
+| 系统指令怎么构建 | [AssistantPromptContextBuilder.java](../AskLens-backend/src/main/java/com/argus/rag/assistant/support/config/AssistantPromptContextBuilder.java) |
 
 ---
 

@@ -1,7 +1,7 @@
----
+﻿---
 type: inbox
 tags:
-  - argus
+  - asklens
   - home
   - inbox
 status: active
@@ -20,7 +20,7 @@ status: active
 （整理完成后移到对应专题笔记，或加上 `[[双链]]` 后改 `status: done`）
 # Obsidian Git 推荐配置
 
-> Vault 在 `docs/`，Git 仓库根在 `Argus-master/`。必须设置 **`basePath: ".."`**，否则插件找不到 `.git`。
+> Vault 在 `docs/`，Git 仓库根在 `AskLens/`。必须设置 **`basePath: ".."`**，否则插件找不到 `.git`。
 
 ## 一键导入
 
@@ -37,7 +37,7 @@ status: active
 
 | 设置项 | 推荐值 | 说明 |
 |--------|--------|------|
-| **Vault git root (basePath)** | `..` | 指向 `Argus-master/.git` |
+| **Vault git root (basePath)** | `..` | 指向 `AskLens/.git` |
 | **Auto backup interval** | `10` 分钟 | 有改动时自动 commit |
 | **Auto push interval** | `20` 分钟 | 自动 push（可关） |
 | **Auto pull interval** | `15` 分钟 | 多机协作时拉远程 |
@@ -53,7 +53,7 @@ status: active
 docs(notes): auto backup {{numFiles}} files {{date}}
 ```
 
-仅备份 `docs/` 下的笔记；若 commit 里出现 `Argus-backend/` 等代码改动，说明 basePath 未设为 `..`，或你在 Obsidian 外也改了代码——可一并提交，或在终端分开 commit。
+仅备份 `docs/` 下的笔记；若 commit 里出现 `AskLens-backend/` 等代码改动，说明 basePath 未设为 `..`，或你在 Obsidian 外也改了代码——可一并提交，或在终端分开 commit。
 
 ## 保守方案（不自动 push）
 
@@ -67,7 +67,7 @@ docs(notes): auto backup {{numFiles}} files {{date}}
 笔记仍会自动 **commit** 到本地；push 改在 Cursor 终端手动：
 
 ```powershell
-cd D:\Develop\Argus-master
+cd D:\Develop\AskLens
 git push
 ```
 
@@ -81,7 +81,7 @@ git push
 
 返回 [[Obsidian-Cursor-协作指南]] · [[Home]]
 
-# Argus 知识库
+# AskLens 知识库
 
 > Obsidian Vault 入口。在 Obsidian 中打开 **`docs/`** 文件夹即可；Cursor 中通过 `@docs/...` 引用这些笔记。
 
@@ -89,7 +89,7 @@ git push
 
 | 用途 | 笔记 |
 |------|------|
-| 总览与学习路径 | [[Argus-学习指南]] |
+| 总览与学习路径 | [[AskLens-学习指南]] |
 | RAG 原理图 | [[RAG-核心原理图]] |
 | 本地启动 | [[启动流程与配置加载说明]] |
 | 项目初始化 | [[project-init]] |

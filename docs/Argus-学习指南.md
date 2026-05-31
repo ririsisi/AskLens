@@ -1,4 +1,4 @@
-# Argus 项目学习指南
+﻿# AskLens 项目学习指南
 
 > **适用背景**：已掌握基础 RAG（文档切片 → Embedding → 向量检索 → LLM 生成）和 Spring AI 入门特性（ChatClient、Embedding、简单 RAG）。
 >
@@ -26,7 +26,7 @@
 
 ## 一、项目定位：它是什么，不是什么
 
-| 维度  | 基础 RAG Demo     | Argus                                 |
+| 维度  | 基础 RAG Demo     | AskLens                                 |
 | --- | --------------- | ------------------------------------- |
 | 定位  | 单文件 / 单接口问答     | 企业级多租户知识平台                            |
 | 检索  | 单向量库 Top-K      | PGvector + Elasticsearch 双通道 + RRF 融合 |
@@ -34,7 +34,7 @@
 | 对话  | 无状态             | ReactAgent + 三级短期记忆 + SSE 流式          |
 | 工程  | 单体脚本            | 认证、群组隔离、分片上传、异步 ETL、可观测               |
 
-**一句话总结**：Argus 不是「ChatGPT 套壳」，而是从**文档入库 → 混合检索 → 可信问答 → Agent 对话**全链路自研的企业 RAG 平台。
+**一句话总结**：AskLens 不是「ChatGPT 套壳」，而是从**文档入库 → 混合检索 → 可信问答 → Agent 对话**全链路自研的企业 RAG 平台。
 
 ---
 
@@ -82,7 +82,7 @@ graph TB
 ### 后端包结构（按学习优先级）
 
 ```
-com.argus.rag/
+com.asklens/
 ├── qa/              ★★★ RAG 核心（最高优先级）
 │   ├── rag/         混合检索、RRF、证据评估
 │   └── service/     查询规划、问答编排
@@ -97,7 +97,7 @@ com.argus.rag/
 ### 前端结构（辅助理解）
 
 ```
-Argus-frontend/src/
+AskLens-frontend/src/
 ├── api/              后端 API 封装
 ├── views/
 │   ├── documents/    文档管理
@@ -176,8 +176,8 @@ Argus-frontend/src/
 ### 前置准备（Day 0）
 
 - [ ] 本地跑通：PostgreSQL + pgvector、ES + IK、MinIO、DashScope API Key
-- [ ] 启动后端：`cd Argus-backend && ./mvnw spring-boot:run`
-- [ ] 启动前端：`cd Argus-frontend && npm install && npm run dev`
+- [ ] 启动后端：`cd AskLens-backend && ./mvnw spring-boot:run`
+- [ ] 启动前端：`cd AskLens-frontend && npm install && npm run dev`
 - [ ] 阅读 [启动流程与配置加载说明.md](启动流程与配置加载说明.md)
 - [ ] 打开 Knife4j API 文档：`http://localhost:10001/doc.html`
 
@@ -200,11 +200,11 @@ Argus-frontend/src/
 
 | 文件 | 路径 |
 |------|------|
-| 分片上传 | `Argus-backend/.../document/service/DocumentUploadService.java` |
-| 异步 ETL | `Argus-backend/.../ingestion/service/DocumentIngestionAsyncService.java` |
-| 结构感知切片 | `Argus-backend/.../ingestion/service/pipeline/transformer/StructureAwareChunkTransformer.java` |
-| 向量导入 | `Argus-backend/.../ingestion/vector/VectorIngestionService.java` |
-| ES 索引 | `Argus-backend/.../engine/elasticsearch/ElasticsearchChunkIndexService.java` |
+| 分片上传 | `AskLens-backend/.../document/service/DocumentUploadService.java` |
+| 异步 ETL | `AskLens-backend/.../ingestion/service/DocumentIngestionAsyncService.java` |
+| 结构感知切片 | `AskLens-backend/.../ingestion/service/pipeline/transformer/StructureAwareChunkTransformer.java` |
+| 向量导入 | `AskLens-backend/.../ingestion/vector/VectorIngestionService.java` |
+| ES 索引 | `AskLens-backend/.../engine/elasticsearch/ElasticsearchChunkIndexService.java` |
 
 ---
 
@@ -287,7 +287,7 @@ Client → Controller → 权限校验 → 查询规划 → 双通道检索
 
 ### 7.1 项目描述模板
 
-> **Argus — 企业级 RAG 智能知识平台**（Java 21 / Spring Boot 3.5 / Spring AI Alibaba）
+> **AskLens — 企业级 RAG 智能知识平台**（Java 21 / Spring Boot 3.5 / Spring AI Alibaba）
 >
 > - 设计并实现**混合检索引擎**：PGvector 语义检索 + Elasticsearch BM25 关键词检索，RRF 融合排序，检索准确率较单向量提升明显
 > - 自研 **RAG 问答流水线**：LLM 查询规划（问题分解/改写）、四级证据评估与主动拒答、引用溯源，降低 LLM 幻觉
@@ -307,7 +307,7 @@ Client → Controller → 权限校验 → 查询规划 → 双通道检索
 
 ### 7.3 与「只会 Spring AI 教程」的差异化
 
-| 能力 | 教程级 | Argus 级 |
+| 能力 | 教程级 | AskLens 级 |
 |------|--------|----------|
 | 检索 | `VectorStore.similaritySearch()` | 自研 Hybrid + RRF + 聚类 + 窗口 |
 | 查询 | 用户原问直接检索 | LLM 查询规划 + 多 query 并行 |
@@ -338,7 +338,7 @@ Postman / 断点 / 日志   →  验证 WHAT（实际行为）
 
 ### 8.3 对比你的基础 RAG 知识
 
-| 你已知的 | Argus 对应 | 升级点 |
+| 你已知的 | AskLens 对应 | 升级点 |
 |----------|-----------|--------|
 | Document 切片 | `StructureAwareChunkTransformer` | 结构感知，不是固定长度 |
 | Embedding | `VectorIngestionService` | 512 维 + pgvector HNSW |

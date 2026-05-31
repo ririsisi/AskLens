@@ -1,7 +1,7 @@
----
+﻿---
 type: doc
 version: rag
-tags: [argus, rag, ingestion, hybrid-search, qa, moc]
+tags: [asklens, rag, ingestion, hybrid-search, qa, moc]
 status: published
 related:
   - "[[V2.0-项目文档]]"
@@ -13,9 +13,9 @@ related:
   - "[[Home]]"
 ---
 
-# Argus RAG 核心原理图
+# AskLens RAG 核心原理图
 
-> 本文档描述 Argus 项目中 **Retrieval-Augmented Generation（检索增强生成）** 的完整闭环：
+> 本文档描述 AskLens 项目中 **Retrieval-Augmented Generation（检索增强生成）** 的完整闭环：
 > 文档如何入库、如何被检索、如何驱动大模型生成带引用的回答。
 >
 > 相关详细设计见 [[V2.0-设计决策]]（入库）、[[V3.0-设计决策]]（问答）、[[V4.0-设计决策]]（Agent 集成）。
@@ -26,7 +26,7 @@ related:
 
 ## 1. 一页总览
 
-Argus 的 RAG 不是简单的「Embedding + Top-K + Prompt」，而是四层工程化设计：
+AskLens 的 RAG 不是简单的「Embedding + Top-K + Prompt」，而是四层工程化设计：
 
 | 层次 | 能力 | 核心类 |
 |------|------|--------|
@@ -85,7 +85,7 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    FE[Argus-frontend] --> DOC[document 分片上传]
+    FE[AskLens-frontend] --> DOC[document 分片上传]
     FE --> QA[qa POST /ask]
     FE --> ASST[assistant CHAT/KB]
 ```
@@ -192,7 +192,7 @@ flowchart TD
 |------|---------|------|----------|
 | PostgreSQL | `document_chunks` | 切片原文、序号、元数据 | ETL 第 6 步 |
 | PGvector | `vector_store` | 语义向量（COSINE + HNSW） | ETL 第 7 步 |
-| Elasticsearch | `argus-chunks-*` | IK 分词 + BM25 关键词 | ETL 第 9 步 |
+| Elasticsearch | `asklens_document_chunks` | IK 分词 + BM25 关键词 | ETL 第 9 步 |
 
 向量 ID 规则：`UUID(documentId + ":" + chunkIndex)`，按 `documentId` 幂等删除后重写。
 
@@ -403,7 +403,7 @@ flowchart LR
     B3 --> B4[LLM 生成]
 ```
 
-### 9.2 Argus RAG
+### 9.2 AskLens RAG
 
 ```mermaid
 flowchart LR
@@ -414,7 +414,7 @@ flowchart LR
     A5 --> A6[回答 + Citations]
 ```
 
-| 维度 | 基础 RAG | Argus |
+| 维度 | 基础 RAG | AskLens |
 |------|----------|-------|
 | 切片 | 固定字符窗口 | 标题 / 段落 / 句子层级 + overlap |
 | 索引 | 单向量库 | PGvector + Elasticsearch 双路 |
