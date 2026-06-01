@@ -24,6 +24,10 @@
 
   "java.import.maven.enabled": true,
 
+  "maven.executable.path": "E:\\ENV\\apache-maven-3.6.3\\bin\\mvn.cmd",
+
+  "maven.settingsFile": "${workspaceFolder}/AskLens-backend/.mvn/settings.xml",
+
   "maven.terminal.useJavaHome": true,
 
   "java.compile.nullAnalysis.mode": "disabled",
