@@ -17,6 +17,12 @@ const ACCOUNT_SECURITY_PATH = '/app/settings'
 const LOGIN_PATH = '/login'
 const BUSINESS_PATH_PREFIXES = ['/app/groups', '/app/documents', '/app/qa', '/app/assistant']
 
+/**
+ * httpOnly refresh Cookie 无法被 JS 读取；用 sessionStorage 标记「本会话曾成功登录」，
+ * 避免未登录用户每次路由跳转都 POST /auth/refresh 并收到 400。
+ */
+const REFRESH_HINT_KEY = 'asklens.refresh_hint'
+
 interface AuthState {
   accessToken: string | null
   currentUser: CurrentUserProfile | null
@@ -120,11 +126,13 @@ export const useAuthStore = defineStore('auth', {
       this.accessToken = null
       this.currentUser = null
       applyAuthorizationHeader(null)
+      sessionStorage.removeItem(REFRESH_HINT_KEY)
     },
     setSession(accessToken: string, currentUser: CurrentUserProfile) {
       this.accessToken = accessToken
       this.currentUser = currentUser
       applyAuthorizationHeader(accessToken)
+      sessionStorage.setItem(REFRESH_HINT_KEY, '1')
     },
     async runBootstrap(): Promise<CurrentUserProfile | null> {
       this.isBootstrapping = true
@@ -138,6 +146,12 @@ export const useAuthStore = defineStore('auth', {
           } catch {
             return await this.refresh()
           }
+        }
+
+        // 无 access token 且本会话从未登录：不调用 refresh，避免控制台 400 噪音
+        if (sessionStorage.getItem(REFRESH_HINT_KEY) !== '1') {
+          this.clearSession()
+          return null
         }
 
         return await this.refresh()

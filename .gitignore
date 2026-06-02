@@ -7,7 +7,8 @@ docs/.obsidian/themes/
 
 # 本地环境配置（含密钥，不提交）
 deploy/local/.env
-.vscode/launch.json
+.vscode/*
+!.vscode/*.example
 
 # 运行时日志
 logs/

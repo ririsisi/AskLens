@@ -1,5 +1,7 @@
-# 答镜AskLens 本地中间件启动（PostgreSQL + Elasticsearch + MinIO）
-# 用法：.\scripts\start-local.ps1
+﻿# 答镜AskLens 本地中间件启动（PostgreSQL + Elasticsearch + MinIO）
+# 用法（任选，无需改 ExecutionPolicy）：
+#   scripts\start-local.cmd          推荐：.cmd 包装，绕过脚本执行策略
+#   .\scripts\start-local.ps1        需 CurrentUser 允许运行 .ps1
 # 后端/前端请自行在 Cursor 中启动（API Key 等环境变量在 launch.json 中配置）
 
 $ErrorActionPreference = "Stop"

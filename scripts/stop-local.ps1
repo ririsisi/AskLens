@@ -1,5 +1,6 @@
 # Stop AskLens local Docker middleware
-# Usage: .\scripts\stop-local.ps1
+# Usage (no ExecutionPolicy change): scripts\stop-local.cmd
+# Or: .\scripts\stop-local.ps1
 
 $ErrorActionPreference = "Stop"
 chcp 65001 | Out-Null

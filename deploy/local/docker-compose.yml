@@ -1,5 +1,5 @@
 # 答镜AskLens 本地开发中间件（PostgreSQL + ES + MinIO）
-# 用法：在项目根目录执行  scripts/start-local.ps1
+# 用法：在项目根目录执行  scripts/start-local.cmd  （或 start-local.ps1）
 #
 # 国内网络可在 .env 中设置：
 #   DOCKER_MIRROR=docker.m.daocloud.io
