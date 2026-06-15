@@ -5,15 +5,16 @@
 
 ## 当前位置
 
-- **上次学到**：（尚未开课）
-- **今天/下次从这里接**：第一节课建议从 **02 核心框架 · ReAct**（必考、高频）开始；并行先用 `面试模拟` 跑一遍「项目介绍 / 你的角色 / RAG / 幻觉」这几道最怕的题
-- **最近一次学习日期**：—
+- **上次学到**：**02 核心框架**继续推进。① ReAct **对比题**（vs CoT：闭卷无接地 / vs Plan-and-Execute：路径是否依赖上一步真实结果）已完成理解+输出+话术入库；② **Reflexion** 理解过关（解决"教训不跨轮复用"、三角色 Actor/Evaluator/Reflector、Act→Eval→Reflect→Retry、反思须"具体可执行"），但**输出待巩固**（循环/角色说糊、"重试"误写"重拾"，已入复习队列）；③ **LATS** 刚开了个 WHY 头（"岔路多+错误晚暴露时 ReAct 一条路走到黑的风险/如何别吊死"），**学生未作答即下课**。
+- **今天/下次从这里接**：从 **LATS 的 WHY 问题**接着答（树搜索/MCThS 直觉），再往后 **LangChain → LangGraph（可挂 AskLens 图引擎，ReactAgent 即建于 Spring AI Alibaba 图引擎）→ 多 Agent**，收尾 02 模块。可选并行：`面试模拟` 压测 ReAct / Reflexion。
+- **最近一次学习日期**：2026-06-15
+- **配置变更**：已在 `tutor.md` 第三节加入铁规则「🔒 话术必存档」——任何时候产出可背诵话术都必须当场写入 `notes/面试话术库.md`（不限于显式 `★话术`）。
 
 ## 总览（对应 `docs/01-面试八股文/` 9 模块，按推荐主线排序）
 
 > 推荐主线（已有基础者）：02 → 03 → 04 → 05 → 08 → 07 → 06 → 09 → 01
 
-- ⬜ 02 核心框架（ReAct / Plan-and-Execute / Reflexion / LangGraph）— **必考，先学**
+- 🟡 02 核心框架（ReAct / Plan-and-Execute / Reflexion / LangGraph）— **必考**。ReAct 已学透+挂项目+对比题+话术；Plan-and-Execute 已在对比题中讲清主场（步骤清晰可预知）；Reflexion 理解过关、输出待巩固。**剩余未开始：LATS（进行中-WHY未答）/ LangChain / LangGraph / 多 Agent**
 - ⬜ 03 RAG 技术（分块 / 向量库 / 混合检索 / RRF / 重排 / GraphRAG）— 高频，**可大量挂 AskLens**
 - ⬜ 04 工具调用（Function Calling / MCP / 工具路由 / 安全）— MCP 热点
 - ⬜ 05 记忆系统（短期/长期 / 摘要压缩 / 检索策略）— **可挂 AskLens 三级记忆压缩**
@@ -37,4 +38,5 @@
 
 > 格式：日期 | 模块 | 学到了什么 / 下次注意
 
-- （还没有记录，第一次下课后由导师回写）
+- 2026-06-15(晚) | 02 核心框架·对比题+Reflexion | ① ReAct vs CoT（CoT 闭卷、无 Action/Observation、只能自省→易幻觉）；ReAct vs Plan-and-Execute（关键判据：下一步是否强依赖上一步真实结果/路径是否事先可知，依赖动态反馈用 ReAct，可预知路线用 P&E）。② Reflexion：补 ReAct"教训不跨轮复用"短板，三角色 Actor/Evaluator/Reflector，循环 Act→Eval→Reflect→Retry，反思须具体可执行。③ LATS 仅开 WHY 头未答。**配置**：tutor.md 加「话术必存档」铁规则，话术库新增 ReAct三框架对比 + Reflexion 两条。**注意点**：Reflexion 输出说糊（"重拾"误、循环/角色不清，已入复习队列）；Observation"程序生成"今热身答对一次（升 🟡）。
+- 2026-06-15 | 02 核心框架·ReAct | 学了 ReAct 的 WHY（模型知识过时+不会算→需工具；且依赖关系使"边做边想"优于"开局定死计划"）、Thought/Action/Observation 三件套、Observation 必须系统生成（防幻觉）。挂 AskLens：ReactAgent 工厂 + knowledgeBaseSearch 工具，两道防死循环闸（recursionLimit(10) + hasCompletedSearch 守卫）。话术已入库。**注意点：学生两次把"Observation 由程序生成"说成"人为观察"，已入复习队列。** 下次从 ReAct 对比题接。
